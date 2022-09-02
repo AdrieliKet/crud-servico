@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,17 +31,20 @@ public class ClienteController {
 	ClienteService clienteService;
 	
 	@GetMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<Cliente>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(clienteService.findAll(pageable));
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Cliente> findById(@PathVariable long id) {
 		Cliente cliente = clienteService.findById(id);
 		return ResponseEntity.ok(cliente);
 	}
 
 	@PostMapping(value = "/")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Cliente> add(@RequestBody Cliente cliente) 
 			throws URISyntaxException {
 		Cliente clienteNovo = clienteService.save(cliente);
@@ -49,6 +53,7 @@ public class ClienteController {
 	}
 
 	@PutMapping(value = "/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Cliente> update(@Valid @RequestBody Cliente cliente, @PathVariable long id) {
 		cliente.setId(id);
 		clienteService.update(cliente);
@@ -56,6 +61,7 @@ public class ClienteController {
 	}
 
 	@DeleteMapping(path = "/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deleteById(@PathVariable long id) {
 		clienteService.deleteById(id);
 		return ResponseEntity.ok().build();

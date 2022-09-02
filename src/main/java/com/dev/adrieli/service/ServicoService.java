@@ -27,8 +27,20 @@ public class ServicoService {
         
         return servicoRepository.findAll(pageable);
     }
+    
+    public Page<Servico> buscarServicoPagamentoPendente(Pageable pageable) {
+        
+        return servicoRepository.buscarServicoPagamentoPendente(pageable);
+    }
+   
    
     public Servico save(Servico servico)  {
+    	Servico servico1 = new Servico();
+    	if (servico1.getValorPago() == 0 && servico1.getDataPagamento() == null) {
+    		servico1.setStatus("pendente");
+    	} else {
+    		servico1.setStatus("realizado");
+    	}
     	return servicoRepository.save(servico);
     }
     
@@ -46,4 +58,18 @@ public class ServicoService {
     public Long count() {
         return servicoRepository.count();
     }
+    
+    public Servico realizarPagamento(Long id, Double valorPago) {
+		Servico servico = servicoRepository.findById(id).get();
+		servico.setStatus("realizado");
+		servico.setValorPago(valorPago);
+		return servicoRepository.save(servico);
+	}
+    
+    public Servico cancelarServico(Long idServico) {
+		Servico servico = servicoRepository.findById(idServico).get();
+		servico.setStatus("cancelado");
+		return servicoRepository.save(servico);
+	}
+    
 }
