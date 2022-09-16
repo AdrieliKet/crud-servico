@@ -35,11 +35,10 @@ public class ServicoService {
    
    
     public Servico save(Servico servico)  {
-    	Servico servico1 = new Servico();
-    	if (servico1.getValorPago() == 0 && servico1.getDataPagamento() == null) {
-    		servico1.setStatus("pendente");
+    	if (servico.getValorPago() == 0 && servico.getDataPagamento() == null) {
+    		servico.setStatus("pendente");
     	} else {
-    		servico1.setStatus("realizado");
+    		servico.setStatus("realizado");
     	}
     	return servicoRepository.save(servico);
     }
