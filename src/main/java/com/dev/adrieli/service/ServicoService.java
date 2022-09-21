@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.dev.adrieli.entity.Servico;
 import com.dev.adrieli.repository.ServicoRepository;
 
+import java.util.List;
+
 @Service
 public class ServicoService {
 	
@@ -28,9 +30,9 @@ public class ServicoService {
         return servicoRepository.findAll(pageable);
     }
     
-    public Page<Servico> buscarServicoPagamentoPendente(Pageable pageable) {
+    public List<Servico> buscarServicoPagamentoPendente() {
         
-        return servicoRepository.buscarServicoPagamentoPendente(pageable);
+        return servicoRepository.buscarServicoPagamentoPendente();
     }
    
    
@@ -43,15 +45,17 @@ public class ServicoService {
     	return servicoRepository.save(servico);
     }
     
-    public void update(Servico servico) {      
-    	servicoRepository.save(servico);       
+    public Servico update(Servico servico) {
+        if (servico.getValorPago() >0 && servico.getDataPagamento() != null) {
+            servico.setStatus("realizado");
+        }
+        return servicoRepository.save(servico);
     }    
   
     
-    public void deleteById(Long id)  {
-        if (!existsById(id)) {         
-        	servicoRepository.deleteById(id);
-        }        
+    public void delete(Long id)  {
+        Servico servico = servicoRepository.findById(id).get();
+        servicoRepository.delete(servico);
     }
     
     public Long count() {

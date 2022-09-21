@@ -2,6 +2,7 @@ package com.dev.adrieli.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -43,13 +44,13 @@ public class ServicoController {
 	
 	@GetMapping(value = "/buscarPagamentoPendente", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Page<Servico>> buscarServicoPagamentoPendente(Pageable pageable) {
-		return ResponseEntity.ok(servicoService.buscarServicoPagamentoPendente(pageable));
+	public ResponseEntity<List<Servico>> buscarServicoPagamentoPendente() {
+		return ResponseEntity.ok(servicoService.buscarServicoPagamentoPendente());
 	}
 	@GetMapping(value = "/buscarCancelado", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Page<Servico>> buscarServicoCancelado(Pageable pageable) {
-		return ResponseEntity.ok(servicoRepository.buscarServicoCancelado(pageable));
+	public ResponseEntity<List<Servico>> buscarServicoCancelado() {
+		return ResponseEntity.ok(servicoRepository.buscarServicoCancelado());
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,13 +60,13 @@ public class ServicoController {
 		return ResponseEntity.ok(servico);
 	}
 	//localhost:8080/api/servico/realizarPagamento?id=1&valorPago=30.0
-	@GetMapping(value = "/realizarPagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/realizarPagamento/", produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin("http://localhost:3000")
 	public Servico realizarPagamento(@RequestParam long id, @RequestParam Double valorPago) {
 		return servicoService.realizarPagamento(id, valorPago);
 	}
 	
-	@GetMapping(value = "/cancelarServico/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/cancelarServico/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin("http://localhost:3000")
 	public Servico cancelarServico(@PathVariable long id) {
 		return servicoService.cancelarServico(id);
@@ -73,25 +74,20 @@ public class ServicoController {
 
 	@PostMapping(value = "/")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Servico> add(@RequestBody Servico servico) 
-			throws URISyntaxException {
-		Servico servicoNovo = servicoService.save(servico);
-		return ResponseEntity.created(new URI("/api/servico/" + 
-				servicoNovo.getId())).body(servicoNovo);
+	public Servico add(@RequestBody Servico servico) {
+		return  servicoService.save(servico);
 	}
 
 	@PutMapping(value = "/{id}")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Servico> update(@Valid @RequestBody Servico servico, @PathVariable long id) {
-		servico.setId(id);
-		servicoService.update(servico);
-		return ResponseEntity.ok().build();
+	public Servico update(@Valid @RequestBody Servico servico, @PathVariable long id) {
+		return servicoService.update(servico);
 	}
 
 	@DeleteMapping(path = "/{id}")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Void> deleteById(@PathVariable long id) {
-		servicoService.deleteById(id);
+	public ResponseEntity<Void> delete(@PathVariable long id) {
+		servicoService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 }

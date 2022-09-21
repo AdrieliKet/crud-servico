@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 import com.dev.adrieli.entity.Servico;
 
 public interface ServicoRepository extends JpaRepository<Servico, Long>{
-	@Query("select s from Servico s where s.status='pendente'")
-	Page<Servico> buscarServicoPagamentoPendente(Pageable pageable);
+	@Query("select s from Servico s where s.status='pendente' or s.valorPago = 0")
+	List<Servico> buscarServicoPagamentoPendente();
 	
 	@Query("select s from Servico s where s.status='cancelado'")
-	Page<Servico> buscarServicoCancelado(Pageable pageable);
+	List<Servico> buscarServicoCancelado();
 	
 }
