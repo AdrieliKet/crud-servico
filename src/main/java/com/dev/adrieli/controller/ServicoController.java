@@ -36,37 +36,37 @@ public class ServicoController {
 	@Autowired
 	ServicoRepository servicoRepository;
 	
-	@GetMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Page<Servico>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(servicoService.findAll(pageable));
+	public List<Servico> findAll() {
+		return servicoService.findAll();
 	}
 	
-	@GetMapping(value = "/buscarPagamentoPendente", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/buscarPagamentoPendente")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<List<Servico>> buscarServicoPagamentoPendente() {
-		return ResponseEntity.ok(servicoService.buscarServicoPagamentoPendente());
+	public List<Servico> buscarServicoPagamentoPendente() {
+		return servicoService.buscarServicoPagamentoPendente();
 	}
-	@GetMapping(value = "/buscarCancelado", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/buscarCancelado")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<List<Servico>> buscarServicoCancelado() {
-		return ResponseEntity.ok(servicoRepository.buscarServicoCancelado());
+	public List<Servico> buscarServicoCancelado() {
+		return servicoRepository.buscarServicoCancelado();
 	}
 
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{id}")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Servico> findById(@PathVariable long id) {
+	public Servico findById(@PathVariable long id) {
 		Servico servico = servicoService.findById(id);
-		return ResponseEntity.ok(servico);
+		return servico;
 	}
 	//localhost:8080/api/servico/realizarPagamento?id=1&valorPago=30.0
-	@GetMapping(value = "/realizarPagamento/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/realizarPagamento/")
 	@CrossOrigin("http://localhost:3000")
 	public Servico realizarPagamento(@RequestParam long id, @RequestParam Double valorPago) {
 		return servicoService.realizarPagamento(id, valorPago);
 	}
 	
-	@PutMapping(value = "/cancelarServico/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/cancelarServico/{id}")
 	@CrossOrigin("http://localhost:3000")
 	public Servico cancelarServico(@PathVariable long id) {
 		return servicoService.cancelarServico(id);

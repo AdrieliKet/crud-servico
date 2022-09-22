@@ -25,9 +25,8 @@ public class ServicoService {
         return servico;
     }
     
-    public Page<Servico> findAll(Pageable pageable) {
-        
-        return servicoRepository.findAll(pageable);
+    public List<Servico> findAll() {
+        return servicoRepository.findAll();
     }
     
     public List<Servico> buscarServicoPagamentoPendente() {
